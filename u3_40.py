@@ -9,20 +9,37 @@ grammar = [
     ]
 
 #token: 
+#def replace(tokens, grammar):
+#    for t in tokens:
+#        for g in grammar:
+#            if t == g[0]:
+#              yield g[1]
+#        yield [t]
+
+
+# should generate a list of tokens through 'yield [token]'
+
+#def expand_token(token, grammar):
+#    yielded=False
+#    for rule in grammar:
+#        if token == rule[0]:
+#            yield rule[1]
+#            yielded=True
+#    if not yielded:
+#        yield token
+    
+# should generate a list of sentences through 'yield [sentence]'
 def expand(tokens, grammar):
-    res=[]
     for pos in range(len(tokens)):
         for rule in grammar:
-            # hmmmm
-            # res += [ rule[1] for t in tokens if t == rule[0] ]
             if tokens[pos] == rule[0]:
-                res.append(rule[1])
-            else:
-                res.append(tokens[pos])
-    return res  
+                yield tokens[0:pos] + \
+                rule[1] + \
+                tokens[pos+1:]
+
             
 depth = 1
-utterances = [["a", "exp"]]
+utterances = [["a", "exp", "exp"]]
 for x in range(depth):
     for sentence in utterances: # a sentence is a list of words(tokens)
         utterances = utterances + [ i for i in expand(sentence, grammar)]
